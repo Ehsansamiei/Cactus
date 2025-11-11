@@ -15,16 +15,36 @@ dt = 0
 screen_width = screen.get_width()
 screen_height = screen.get_height()
 #################################################
-cactus = pygame.image.load('images/cactus1.png')
-cactus_image = pygame.transform.scale(cactus, (screen_width * (25) / 100, screen_height * (45) / 100))
+
+cactus_frames = [
+    pygame.image.load('images/cactus1.png'),
+    pygame.image.load('images/cactus2.png'),
+    pygame.image.load('images/cactus3.png'),
+    pygame.image.load('images/cactus4.png'),
+]
+# change the size of frames
+cactus_frames = [pygame.transform.scale(frame, (screen_width * 0.20, screen_height * 0.40)) for frame in cactus_frames]
+
+cactus_frame_index = 0
+cactus_animation_timer = 0
+cactus_animation_speed = 0.2
+
+cactus_y = screen_height * 0.5
+cactus_velocity = 0
+gravity = 1000
+is_jumping = False
+jump_force = -800
+
+# cactus = pygame.image.load('images/cactus1.png')
+# cactus_image = pygame.transform.scale(cactus, (screen_width * (20) / 100, screen_height * (40) / 100))
 
 #################################################
 background = pygame.image.load('images/sky.png')
 background_image = pygame.transform.scale(background,(screen_width, screen_height))
 background_image_x = 0
 #################################################
-floor = pygame.image.load('images/floor.jpg')
-floor_image = pygame.transform.scale(floor,(screen_width, screen_height  / (100) * 18))
+floor = pygame.image.load('images/floor.png')
+floor_image = pygame.transform.scale(floor,(screen_width, screen_height  / (100) * 20))
 floor_image_y = 0
 #################################################
 quit_button = pygame.image.load('images/exit_btn.png')
@@ -68,6 +88,11 @@ while runnig :
         if event.type == pygame.QUIT:
             runnig = False
 
+        keys = pygame.key.get_pressed()
+        if (keys[pygame.K_SPACE] or keys[pygame.K_UP]) and not is_jumping:
+            cactus_velocity = jump_force
+            is_jumping = True
+
     '''filll the screen with my background image'''
     screen.blit(background_image, (background_image_x, 0))
     screen.blit(background_image, (background_image_x + screen_width, 0))
@@ -81,14 +106,32 @@ while runnig :
     if floor_image_y <= -screen_width:
         floor_image_y = 0
 
-    
+    # update animation
+    cactus_animation_timer += dt
+    if cactus_animation_timer >= cactus_animation_speed:
+        cactus_animation_timer = 0
+        cactus_frame_index = (cactus_frame_index + 1) % len(cactus_frames)
+
+
     if exit_button.draw():
         # accident = True
         pygame.quit()
         quit()
 
 
-    screen.blit(cactus_image, (0, screen_height * (50) / 100))
+    # screen.blit(cactus_image, (0, screen_height * (50) / 100))
+    screen.blit(cactus_frames[cactus_frame_index], (0, cactus_y))
+    # apply gravity
+    cactus_velocity += gravity * dt
+    cactus_y += cactus_velocity * dt
+
+    # touch the floor
+    ground_y = screen_height * 0.5  
+    if cactus_y >= ground_y:
+        cactus_y = ground_y
+        cactus_velocity = 0
+        is_jumping = False
+
     # Render the game
     pygame.display.flip()
 
