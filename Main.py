@@ -17,35 +17,32 @@ screen_height = screen.get_height()
 #################################################
 
 cactus_frames = [
-    pygame.image.load('images/cactus1.png'),
-    pygame.image.load('images/cactus2.png'),
-    pygame.image.load('images/cactus3.png'),
-    pygame.image.load('images/cactus4.png'),
+    # pygame.image.load('images/cactus1.png'),
+    pygame.image.load('images/cactus-run1.png'),
+    # pygame.image.load('images/cactus4.png'),
+    pygame.image.load('images/cactus-run2.png'),
 ]
 # change the size of frames
-cactus_frames = [pygame.transform.scale(frame, (screen_width * 0.20, screen_height * 0.40)) for frame in cactus_frames]
+cactus_frames = [pygame.transform.scale(frame, (screen_width * 0.10, screen_height * 0.25)) for frame in cactus_frames]
 
 cactus_frame_index = 0
 cactus_animation_timer = 0
 cactus_animation_speed = 0.2
 
-cactus_y = screen_height * 0.5
+cactus_y = screen_height * 0.93
 cactus_velocity = 0
-gravity = 1000
+gravity = 2000
 is_jumping = False
-jump_force = -800
-
-# cactus = pygame.image.load('images/cactus1.png')
-# cactus_image = pygame.transform.scale(cactus, (screen_width * (20) / 100, screen_height * (40) / 100))
+jump_force = -1000
 
 #################################################
 background = pygame.image.load('images/sky.png')
 background_image = pygame.transform.scale(background,(screen_width, screen_height))
 background_image_x = 0
 #################################################
-floor = pygame.image.load('images/floor.png')
-floor_image = pygame.transform.scale(floor,(screen_width, screen_height  / (100) * 20))
-floor_image_y = 0
+floor = pygame.image.load('images/floor2.png')
+floor_image = pygame.transform.scale(floor,(screen_width, screen_height  / (100) * 8))
+floor_image_x = 0
 #################################################
 quit_button = pygame.image.load('images/exit_btn.png')
 quit_button_image = pygame.transform.scale(quit_button, (screen_width * (20) / 100, screen_height * (20) / 100))
@@ -100,11 +97,11 @@ while runnig :
     if background_image_x <= -screen_width:
         background_image_x = 0
 
-    screen.blit(floor_image, (floor_image_y, screen_height * (83) / 100))
-    screen.blit(floor_image, (floor_image_y + screen_width, screen_height * (83) / 100))
-    floor_image_y -= 5
-    if floor_image_y <= -screen_width:
-        floor_image_y = 0
+    screen.blit(floor_image, (floor_image_x, screen_height * (93) / 100))
+    screen.blit(floor_image, (floor_image_x + screen_width, screen_height * (93) / 100))
+    floor_image_x -= 5
+    if floor_image_x <= -screen_width:
+        floor_image_x = 0
 
     # update animation
     cactus_animation_timer += dt
@@ -119,14 +116,15 @@ while runnig :
         quit()
 
 
-    # screen.blit(cactus_image, (0, screen_height * (50) / 100))
+
     screen.blit(cactus_frames[cactus_frame_index], (0, cactus_y))
     # apply gravity
     cactus_velocity += gravity * dt
     cactus_y += cactus_velocity * dt
 
     # touch the floor
-    ground_y = screen_height * 0.5  
+    
+    ground_y = screen_height * 0.75
     if cactus_y >= ground_y:
         cactus_y = ground_y
         cactus_velocity = 0
