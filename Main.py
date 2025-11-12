@@ -74,7 +74,7 @@ background_image_x = 0
 #################################################
 floor = pygame.image.load('images/floor2.png')
 floor_image = pygame.transform.scale(floor,(screen_width, screen_height  / (100) * 8))
-floor_height = screen_height * 0.07
+floor_height = screen_width * 0.04
 floor_image_x = 0
 #################################################
 quit_button = pygame.image.load('images/exit_btn.png')
@@ -86,10 +86,10 @@ start_btn_image = Button(screen_width * 0.45, screen_height * 0.4, start_btn, 0.
 
 
 settings_btn = pygame.image.load('images/SETTING_btn.png')
-settings_btn_image = Button(screen_width * 0.45, screen_height * 0.5, settings_btn, 0.1)
+settings_btn_image = Button(screen_width * 0.45, screen_height * 0.5, settings_btn, 0.1 * scale_factor)
 
 
-menu_exit_btn_image = Button(screen_width * 0.45, screen_height * 0.6, quit_button, 0.1)
+menu_exit_btn_image = Button(screen_width * 0.45, screen_height * 0.6, quit_button, 0.1 * scale_factor)
 
 
 
